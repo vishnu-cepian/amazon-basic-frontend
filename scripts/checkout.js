@@ -90,6 +90,14 @@ function renderOrderSummary() {
 
   document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
 
+  let cartQuantity = 0;
+
+    cart.forEach((cartItem)=>{
+        cartQuantity += cartItem.quantity;
+    })
+ 
+  document.querySelector('.return-to-home-link').innerHTML =`${cartQuantity} items`;
+
   document.querySelectorAll('.delete-quantity-link').forEach((link)=>{
     link.addEventListener('click' , () => {
       const productId = link.dataset.productId;

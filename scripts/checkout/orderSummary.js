@@ -1,12 +1,17 @@
 
 import { cart, removeFromCart } from "../../data/cart.js";
 import {getProduct} from "../../data/products.js";
+import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 
 export function renderOrderSummary() {
   let cartSummaryHTML="";
   cart.forEach((cartItem)=>{
       const productId = cartItem.productId;
       const matchingProduct = getProduct(productId);
+
+      const today = dayjs();
+      const deliveryDate = today;
+      const dateString = deliveryDate.format("dddd,MMMM D");
 
       cartSummaryHTML += `<div class="cart-item-container">
                 <div class="delivery-date">

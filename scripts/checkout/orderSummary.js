@@ -2,7 +2,7 @@
 import { cart, removeFromCart } from "../../data/cart.js";
 import {getProduct} from "../../data/products.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
-
+import { deliveryOptions } from "../../data/deliveryOptions.js";
 export function renderOrderSummary() {
   let cartSummaryHTML="";
   cart.forEach((cartItem)=>{
@@ -47,7 +47,18 @@ export function renderOrderSummary() {
                     <div class="delivery-options-title">
                       Choose a delivery option:
                     </div>
-                    <div class="delivery-option">
+                    ${deliveryOptionHTML(matchingProduct,cartItem)}
+                  </div>
+                </div>
+              </div>
+            `;
+  })
+
+  function deliveryOptionHTML(matchingProduct,cartItem) {
+    let html="";
+    deliveryOptions.forEach((deliveryOption => {
+      
+      html+=`<div class="delivery-option">
                       <input type="radio" checked
                         class="delivery-option-input"
                         name="delivery-option-1">
@@ -59,39 +70,11 @@ export function renderOrderSummary() {
                           FREE Shipping
                         </div>
                       </div>
-                    </div>
-                    <div class="delivery-option">
-                      <input type="radio"
-                        class="delivery-option-input"
-                        name="delivery-option-1">
-                      <div>
-                        <div class="delivery-option-date">
-                          Wednesday, June 15
-                        </div>
-                        <div class="delivery-option-price">
-                          $4.99 - Shipping
-                        </div>
-                      </div>
-                    </div>
-                    <div class="delivery-option">
-                      <input type="radio"
-                        class="delivery-option-input"
-                        name="delivery-option-1">
-                      <div>
-                        <div class="delivery-option-date">
-                          Monday, June 13
-                        </div>
-                        <div class="delivery-option-price">
-                          $9.99 - Shipping
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            `;
-  })
-
+                    </div>`
+    }))
+    
+    return html;
+  }
 
   document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
 

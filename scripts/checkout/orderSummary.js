@@ -1,22 +1,27 @@
 
-import { cart, removeFromCart } from "../../data/cart.js";
+import { cart, removeFromCart, updateDeliveryOption } from "../../data/cart.js";
 import {getProduct} from "../../data/products.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
-import { deliveryOptions } from "../../data/deliveryOptions.js";
+import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatCurrecy } from "../utils/money.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
+
 export function renderOrderSummary() {
   let cartSummaryHTML="";
   cart.forEach((cartItem)=>{
       const productId = cartItem.productId;
       const matchingProduct = getProduct(productId);
+      
+      const deliveryOptionId = cartItem.deliveryOptionId;
+      const deliveryOption = getDeliveryOption(deliveryOptionId);
 
       const today = dayjs();
-      const deliveryDate = today;
+      const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
       const dateString = deliveryDate.format("dddd,MMMM D");
 
       cartSummaryHTML += `<div class="cart-item-container">
                 <div class="delivery-date">
-                  Delivery date: Tuesday, June 21
+                  Delivery date: ${dateString}
                 </div>
     
                 <div class="cart-item-details-grid">
@@ -28,7 +33,7 @@ export function renderOrderSummary() {
                     ${matchingProduct.name}
                     </div>
                     <div class="product-price">
-                      $${(matchingProduct.priceCents/100).toFixed(2)}
+                      $${formatCurrecy(matchingProduct.priceCents)}
                     </div>
                     <div class="product-quantity">
                       <span>
@@ -68,7 +73,8 @@ export function renderOrderSummary() {
         const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
       html+=`<div class="delivery-option"
-      >
+      data-product-id="${matchingProduct.id}"
+      data-delivery-option-id="${deliveryOption.id}">
                       <input type="radio" ${isChecked ? "checked" : ""}
                         class="delivery-option-input"
                         name="delivery-option-${matchingProduct.id}">
@@ -101,6 +107,16 @@ export function renderOrderSummary() {
       const productId = link.dataset.productId;
       removeFromCart(productId);
       renderOrderSummary();
+      renderPaymentSummary();
+    })
+  })
+
+  document.querySelectorAll(".delivery-option").forEach((element) => {
+    element.addEventListener("click", () => {
+      const {productId, deliveryOptionId} = element.dataset;
+      updateDeliveryOption(productId,deliveryOptionId);
+      renderOrderSummary();
+      renderPaymentSummary();
     })
   })
 }

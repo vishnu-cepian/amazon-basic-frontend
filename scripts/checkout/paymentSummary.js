@@ -1,7 +1,9 @@
-import { cart } from "../../data/cart.js";
+import { cart,removeFromCart } from "../../data/cart.js";
 import { getProduct } from "../../data/products.js";
 import { formatCurrecy } from "../utils/money.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
+import { renderOrderSummary } from "./orderSummary.js";
+import { orderList,addToOrderList,refreshOrderList } from "../../data/orderList.js";
 
 export function renderPaymentSummary() {
 
@@ -55,5 +57,18 @@ export function renderPaymentSummary() {
           </div>`;
 
     document.querySelector('.payment-summary').innerHTML = paymentummaryHTML;
+
+    document.querySelector('.place-order-button').addEventListener('click', () => {
+      refreshOrderList();
+      cart.forEach((cartItem) => {
+        addToOrderList(cartItem.productId,cartItem.quantity,cartItem.deliveryOptionId);
+        // removeFromCart(cartItem.productId)
+        // renderPaymentSummary()
+        // renderOrderSummary()
+      })
+      // orderList.forEach(item => {
+      //   console.log(item)
+      // })
+    })
   }
 

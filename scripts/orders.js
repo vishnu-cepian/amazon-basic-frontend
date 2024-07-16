@@ -1,6 +1,7 @@
 import { cart } from "../data/cart.js";
 import { orderList } from "../data/orderList.js";
 import { getProduct } from "../data/products.js";
+import { formatCurrecy } from "./utils/money.js";
 
 document.querySelector('.cart-quantity').innerHTML = 0;
 
@@ -16,11 +17,11 @@ function renderOrderList() {
             <div class="order-header-left-section">
               <div class="order-date">
                 <div class="order-header-label">Order Placed:</div>
-                <div>August 12</div>
+                <div>${order.currDate}</div>
               </div>
               <div class="order-total">
                 <div class="order-header-label">Total:</div>
-                <div>$35.06</div>
+                <div>$${formatCurrecy(order.totalPriceCents)}</div>
               </div>
             </div>
 
@@ -40,7 +41,7 @@ function renderOrderList() {
                 ${matchingProduct.name}
               </div>
               <div class="product-delivery-date">
-                Arriving on: August 15
+                Arriving on: ${order.deliveryDate}
               </div>
               <div class="product-quantity">
                 Quantity: ${order.quantity}

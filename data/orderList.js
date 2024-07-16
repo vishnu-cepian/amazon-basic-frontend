@@ -8,12 +8,15 @@ function saveToStorage() {
     localStorage.setItem("orderList",JSON.stringify(orderList));
 }
 
-export function addToOrderList(productId,quantity,deliveryOpitonId) {
+export function addToOrderList(productId,quantity,deliveryOpitonId,currDate,dateString,totalPriceCents) {
    
     orderList.push({
         productId: productId,
         quantity: quantity,
-        deliveryOptionId: deliveryOpitonId
+        deliveryOptionId: deliveryOpitonId,
+        currDate: currDate,
+        deliveryDate : dateString,
+        totalPriceCents: totalPriceCents
     })
     saveToStorage();
 }

@@ -4,6 +4,7 @@ import { formatCurrecy } from "../utils/money.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { renderOrderSummary } from "./orderSummary.js";
 import { orderList,addToOrderList,refreshOrderList } from "../../data/orderList.js";
+import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 
 export function renderPaymentSummary() {
 
@@ -61,14 +62,23 @@ export function renderPaymentSummary() {
     document.querySelector('.place-order-button').addEventListener('click', () => {
       refreshOrderList();
       cart.forEach((cartItem) => {
-        addToOrderList(cartItem.productId,cartItem.quantity,cartItem.deliveryOptionId);
-        // removeFromCart(cartItem.productId)
-        // renderPaymentSummary()
-        // renderOrderSummary()
+        let deliveryOptionId = cartItem.deliveryOptionId;
+        let deliveryOption = getDeliveryOption(deliveryOptionId);
+        let today = dayjs();
+        let currDate = today.format("dddd, MMMM D");
+        let deliveryDate = today.add(deliveryOption.deliveryDays, "days");
+        let dateString = deliveryDate.format("dddd,MMMM D");
+
+        const product = getProduct(cartItem.productId);
+        const totalBeforeTaxCents = (product.priceCents * cartItem.quantity) + deliveryOption.priceCents;
+        const taxCents = totalBeforeTaxCents * 0.1;
+        const totalPriceCents = totalBeforeTaxCents + taxCents;
+
+        addToOrderList(cartItem.productId,cartItem.quantity,cartItem.deliveryOptionId,currDate,dateString,totalPriceCents);
+        removeFromCart(cartItem.productId)
+        renderPaymentSummary()
+        renderOrderSummary()
       })
-      // orderList.forEach(item => {
-      //   console.log(item)
-      // })
     })
   }
 

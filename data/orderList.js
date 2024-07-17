@@ -8,7 +8,7 @@ function saveToStorage() {
     localStorage.setItem("orderList",JSON.stringify(orderList));
 }
 
-export function addToOrderList(productId,quantity,deliveryOpitonId,currDate,dateString,totalPriceCents) {
+export function addToOrderList(productId,quantity,deliveryOpitonId,currDate,dateString,actualPrice,totalPriceCents) {
    
     orderList.push({
         productId: productId,
@@ -16,8 +16,19 @@ export function addToOrderList(productId,quantity,deliveryOpitonId,currDate,date
         deliveryOptionId: deliveryOpitonId,
         currDate: currDate,
         deliveryDate : dateString,
+        actualPrice: actualPrice,
         totalPriceCents: totalPriceCents
     })
+    saveToStorage();
+}
+
+export function buyAgain(productId) {
+    orderList.forEach(item => {
+        if(item.productId == productId) {
+            item.quantity++;
+            const newPrice = item.totalPriceCents + item.actualPrice
+            item.totalPriceCents = newPrice;
+}})
     saveToStorage();
 }
 

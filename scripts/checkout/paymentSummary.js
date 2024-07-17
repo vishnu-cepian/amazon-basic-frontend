@@ -70,11 +70,12 @@ export function renderPaymentSummary() {
         let dateString = deliveryDate.format("dddd,MMMM D");
 
         const product = getProduct(cartItem.productId);
+        const actualPrice = product.priceCents;
         const totalBeforeTaxCents = (product.priceCents * cartItem.quantity) + deliveryOption.priceCents;
         const taxCents = totalBeforeTaxCents * 0.1;
         const totalPriceCents = totalBeforeTaxCents + taxCents;
 
-        addToOrderList(cartItem.productId,cartItem.quantity,cartItem.deliveryOptionId,currDate,dateString,totalPriceCents);
+        addToOrderList(cartItem.productId,cartItem.quantity,cartItem.deliveryOptionId,currDate,dateString,actualPrice,totalPriceCents);
         removeFromCart(cartItem.productId)
         renderPaymentSummary()
         renderOrderSummary()

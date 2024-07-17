@@ -1,5 +1,5 @@
-import { cart } from "../data/cart.js";
-import { orderList } from "../data/orderList.js";
+
+import { orderList, buyAgain } from "../data/orderList.js";
 import { getProduct } from "../data/products.js";
 import { formatCurrecy } from "./utils/money.js";
 
@@ -46,7 +46,7 @@ function renderOrderList() {
               <div class="product-quantity">
                 Quantity: ${order.quantity}
               </div>
-              <button class="buy-again-button button-primary">
+              <button class="buy-again-button button-primary" data-product-id = "${order.productId}">
                 <img class="buy-again-icon" src="images/icons/buy-again.png">
                 <span class="buy-again-message">Buy it again</span>
               </button>
@@ -64,5 +64,15 @@ function renderOrderList() {
         `
     })
     document.querySelector('.orders-grid').innerHTML = html;
+
+    document.querySelectorAll('.buy-again-button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const productId = btn.dataset.productId;
+        buyAgain(productId);
+        renderOrderList();
+      })
+    })
 }
+
+
 renderOrderList();

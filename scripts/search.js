@@ -1,13 +1,11 @@
-import {products} from "../data/products.js";
-import { cart , addToCart } from "../data/cart.js";
+import { products } from "../data/products.js"
 import { formatCurrecy } from "./utils/money.js";
-import { searchItem } from "./search.js";
 
-let productsHTML=""
-
-products.forEach((product)=>{
-    productsHTML+=`
-    <div class="product-container">
+export function searchItem(Item) {
+    let html = "";
+    products.forEach(product =>{
+        if (product.name === Item) {
+            html+= `<div class="product-container">
         <div class="product-image-container">
             <img class="product-image"
             src=${product.image}>
@@ -56,30 +54,9 @@ products.forEach((product)=>{
             Add to Cart
         </button>
 
-    </div>
-`;
-})
-
-
-document.querySelector('.js-product-grid').innerHTML = productsHTML;
-
-document.querySelectorAll('.add-to-cart-button').forEach((btn) => {
-    btn.addEventListener('click',() => {
-        const productId = btn.dataset.productId;
-        addToCart(productId);
-        updateCartQuantity();
+    </div>`;
+        }
     })
-})
 
-function updateCartQuantity () {
-    let cartQuantity = 0;
-
-    cart.forEach((cartItem)=>{
-        cartQuantity += cartItem.quantity;
-    })
-    document.querySelector(".cart-quantity").innerHTML = cartQuantity;
+    document.querySelector('.js-product-grid').innerHTML = html;
 }
-
-document.querySelector('.search-button').addEventListener('click', () => {
-        searchItem(document.querySelector('.search-bar').value);
-})

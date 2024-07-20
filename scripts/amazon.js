@@ -1,11 +1,12 @@
 import {products} from "../data/products.js";
 import { cart , addToCart } from "../data/cart.js";
 import { formatCurrecy } from "./utils/money.js";
-import { searchItem } from "./search.js";
 
-let productsHTML=""
 
-products.forEach((product)=>{
+function renderProducts(filteredProducts = products) {
+    let productsHTML=""
+
+    filteredProducts.forEach((product)=>{
     productsHTML+=`
     <div class="product-container">
         <div class="product-image-container">
@@ -80,10 +81,23 @@ function updateCartQuantity () {
     document.querySelector(".cart-quantity").innerHTML = cartQuantity;
 }
 
+
+}
+
 document.querySelector('.search-button').addEventListener('click', () => {
-        searchItem(document.querySelector('.search-bar').value);
+    const filteredProducts = searchItem(document.querySelector('.search-bar').value);
+    renderProducts(filteredProducts);
 })
 
 document.querySelector('.search-bar').addEventListener('input',(event) => {
-    searchItem(event.target.value);
+    const filteredProducts = searchItem(event.target.value);
+    renderProducts(filteredProducts);
 })
+
+function searchItem(Item) {
+    return products.filter(product => 
+        product.name.toLowerCase().includes(Item.toLowerCase())
+    );
+}
+
+renderProducts();

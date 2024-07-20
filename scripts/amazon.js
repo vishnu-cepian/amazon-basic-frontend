@@ -83,3 +83,7 @@ function updateCartQuantity () {
 document.querySelector('.search-button').addEventListener('click', () => {
         searchItem(document.querySelector('.search-bar').value);
 })
+
+document.querySelector('.search-bar').addEventListener('input',(event) => {
+    searchItem(event.target.value);
+})

@@ -3,8 +3,12 @@ import { formatCurrecy } from "./utils/money.js";
 
 export function searchItem(Item) {
     let html = "";
-    products.forEach(product =>{
-        if (product.name === Item) {
+
+    const filteredProducts = products.filter(product => 
+        product.name.toLowerCase().includes(Item.toLowerCase())
+    )
+
+    filteredProducts.forEach(product =>{
             html+= `<div class="product-container">
         <div class="product-image-container">
             <img class="product-image"
@@ -55,8 +59,8 @@ export function searchItem(Item) {
         </button>
 
     </div>`;
-        }
     })
 
     document.querySelector('.js-product-grid').innerHTML = html;
+
 }

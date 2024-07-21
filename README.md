@@ -1,8 +1,9 @@
-## AMAZON FRONTEND 
+## AMAZON CLONE 
 
-using HTML, CSS, JS
+A responsive frontend clone of E-commerce website of Amazon. This is created using HTML, CSS and JS.
 
 
-## Purpose
+## Run amazon.html on a local server
 
-Implementing basic javascript to make page interactive
+
+
